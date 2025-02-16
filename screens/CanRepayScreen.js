@@ -8,6 +8,8 @@ import {
   StatusBar,
   TextInput,
   Alert,
+  ActivityIndicator,
+  StyleSheet,
   KeyboardAvoidingView,
   Platform,
   Keyboard
@@ -83,15 +85,15 @@ const CanRepayScreen = ({ navigation }) => {
 
     //Networth Calc
     const calculateNetWorth = () => {
-    const savings = parseFloat(currentSavings) || 0;
-    const car = parseFloat(carValue) || 0;
-    const investments = parseFloat(investmentBalance) || 0;
-    const federalLoan = parseFloat(federalLoanBalance) || 0;
-    const provincialLoan = parseFloat(provincialLoanBalance) || 0;
+      const savings = parseFloat(currentSavings) || 0;
+      const car = parseFloat(carValue) || 0;
+      const investments = parseFloat(investmentBalance) || 0;
+      const federalLoan = parseFloat(federalLoanBalance) || 0;
+      const provincialLoan = parseFloat(provincialLoanBalance) || 0;
 
-    const totalAssets = savings + car + investments;
-    const totalLiabilities = federalLoan + provincialLoan;
-    const calculatedNetWorth = totalAssets - totalLiabilities;
+      const totalAssets = savings + car + investments;
+      const totalLiabilities = federalLoan + provincialLoan;
+      const calculatedNetWorth = totalAssets - totalLiabilities;
 
         setNetWorth(calculatedNetWorth);
     };
@@ -113,6 +115,47 @@ const CanRepayScreen = ({ navigation }) => {
         ]
       };
 
+    const [isLoading, setIsLoading] = useState(false);
+
+      const fetchSupportiveMessage = async () => {
+          setIsLoading(true);
+          try {
+              const response = await fetch('https://secure-atoll-91561-049610200036.herokuapp.com/generateMessage', {
+                  method: 'POST',
+                  headers: {
+                      'Accept': 'application/json',
+                      'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                      monthlyIncome: parseFloat(monthlyIncome) || 0,
+                      totalDebt: parseFloat(totalLiabilities) || 0
+                  })
+              });
+      
+              if (!response.ok) {
+                  throw new Error(`HTTP error! status: ${response.status}`);
+              }
+      
+              const data = await response.json();
+              if (data.message) {
+                  Alert.alert(
+                      "Financial Insight",
+                      data.message,
+                      [{ text: "OK" }],
+                      { cancelable: false }
+                  );
+              }
+          } catch (error) {
+              console.error('Error:', error);
+              Alert.alert(
+                  "Error",
+                  "Unable to get financial advice. Please try again later.",
+                  [{ text: "OK" }]
+              );
+          } finally {
+              setIsLoading(false);
+          }
+      };
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#0A254D" />
@@ -318,6 +361,25 @@ const CanRepayScreen = ({ navigation }) => {
                     )}
                 </View>
 
+              {/* Supportive Advice Section */}
+              <View style={styles.card}>
+                <Text style={styles.cardTitle}>Financial Health Check</Text>
+                <Text style={styles.infoText}>
+                    Tap the button below to receive personalized financial advice based on your current financial standing.
+                </Text>
+                <TouchableOpacity
+                    style={[styles.calcButton, isLoading && styles.disabledButton]}
+                    onPress={fetchSupportiveMessage}
+                    disabled={isLoading}
+                >
+                    {isLoading ? (
+                        <ActivityIndicator color="#ffffff" />
+                    ) : (
+                        <Text style={styles.buttonText}>Get Advice</Text>
+                    )}
+                </TouchableOpacity>
+            </View>
+
             {/* Informational Section */}
             <View style={styles.card}>
               <Text style={styles.cardTitle}>Federal vs. Provincial Loans</Text>
@@ -346,33 +408,6 @@ const CanRepayScreen = ({ navigation }) => {
               </View>
             </View>
 
-            {/* Niche Problem Section */}
-            <View style={styles.card}>
-              <Text style={styles.cardTitle}>Unexpected Expenses Planner</Text>
-              <MaterialCommunityIcons name="piggy-bank" size={24} color="#3498db" style={styles.iconMargin}/>
-              <Text style={styles.infoText}>
-                Life Happens! Enter unexpected expenses like car repairs or medical bills to see their impact on your loan repayment timeline.
-              </Text>
-              <TextInput
-                style={styles.input}
-                keyboardType="numeric"
-                placeholder="Unexpected expense amount"
-                placeholderTextColor="#95a5a6"
-                value={unexpectedExpense}
-                onChangeText={setUnexpectedExpense}
-              />
-              <TouchableOpacity
-                style={styles.calcButton}
-                onPress={calculateImpactOfExpenses}
-              >
-                <Text style={styles.buttonText}>Calculate Impact</Text>
-              </TouchableOpacity>
-              {newRepaymentYears && (
-                <Text style={styles.infoText}>
-                  New Estimated Repayment Duration: {newRepaymentYears} years
-                </Text>
-              )}
-            </View>
 
             {/* Navigation Back Button */}
             <TouchableOpacity
