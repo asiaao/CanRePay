@@ -348,17 +348,30 @@ const CanRepayScreen = ({ navigation }) => {
 
             {/* Niche Problem Section */}
             <View style={styles.card}>
-              <Text style={styles.cardTitle}>
-                Unexpected Expenses Planner
-              </Text>
-                <MaterialCommunityIcons name="piggy-bank" size={24} color="#3498db" style={styles.iconMargin}/>
+              <Text style={styles.cardTitle}>Unexpected Expenses Planner</Text>
+              <MaterialCommunityIcons name="piggy-bank" size={24} color="#3498db" style={styles.iconMargin}/>
               <Text style={styles.infoText}>
-                Life happens! Use this tool to see how unexpected expenses (car
-                repairs, medical bills, etc.) might impact your loan repayment
-                timeline.
+                Life Happens! Enter unexpected expenses like car repairs or medical bills to see their impact on your loan repayment timeline.
               </Text>
-
-              {/* You'd add input fields and logic here to handle this */}
+              <TextInput
+                style={styles.input}
+                keyboardType="numeric"
+                placeholder="Unexpected expense amount"
+                placeholderTextColor="#95a5a6"
+                value={unexpectedExpense}
+                onChangeText={setUnexpectedExpense}
+              />
+              <TouchableOpacity
+                style={styles.calcButton}
+                onPress={calculateImpactOfExpenses}
+              >
+                <Text style={styles.buttonText}>Calculate Impact</Text>
+              </TouchableOpacity>
+              {newRepaymentYears && (
+                <Text style={styles.infoText}>
+                  New Estimated Repayment Duration: {newRepaymentYears} years
+                </Text>
+              )}
             </View>
 
             {/* Navigation Back Button */}
