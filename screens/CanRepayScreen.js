@@ -359,6 +359,24 @@ const CanRepayScreen = ({ navigation }) => {
                         </View>
                     )}
                 </View>
+            {/* Supportive Advice Section */}
+            <View style={styles.card}>
+                <Text style={styles.cardTitle}>Financial Health Check</Text>
+                <Text style={styles.infoText}>
+                    Tap the button below to receive personalized financial advice based on your current financial standing.
+                </Text>
+                <TouchableOpacity
+                    style={[styles.calcButton, isLoading && styles.disabledButton]}
+                    onPress={fetchSupportiveMessage}
+                    disabled={isLoading}
+                >
+                    {isLoading ? (
+                        <ActivityIndicator color="#ffffff" />
+                    ) : (
+                        <Text style={styles.buttonText}>Get Advice</Text>
+                    )}
+                </TouchableOpacity>
+            </View>
 
             {/* Informational Section */}
             <View style={styles.card}>
