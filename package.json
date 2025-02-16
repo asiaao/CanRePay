@@ -3,7 +3,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node canrepay-backend/server.js",
-    "start:expo": "expo start"
+    "expo": "expo start"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
