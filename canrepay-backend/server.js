@@ -1,7 +1,9 @@
+
 const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
-require("dotenv").config(); // Loads API key from Railway environment variables
+require("dotenv").config(); // Loads API key from Railway variables
+
 
 const app = express();
 app.use(cors());
@@ -66,7 +68,7 @@ app.post("/generateMessage", async (req, res) => {
     }
 });
 
-// Start the server
-app.listen(PORT, () => {
+// Starts server
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server is running on port ${PORT}`);
 });

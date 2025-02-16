@@ -116,6 +116,7 @@ const CanRepayScreen = ({ navigation }) => {
 
     const [isLoading, setIsLoading] = useState(false);
 
+
     const fetchSupportiveMessage = async () => {
       setIsLoading(true);
       try {
@@ -361,19 +362,25 @@ const CanRepayScreen = ({ navigation }) => {
                 </View>
 
               {/* Supportive Advice Section */}
+
             <View style={styles.card}>
                 <Text style={styles.cardTitle}>We're here to support you!</Text>
                 <Text style={styles.infoText}>
                     Tap the button below to receive helpful financial tips and encouragement.
+              <View style={styles.card}>
+                <Text style={styles.cardTitle}>Financial Health Check</Text>
+                <Text style={styles.infoText}>
+                    Tap the button below to receive personalized financial advice based on your current financial standing.
                 </Text>
                 <TouchableOpacity
                     style={[styles.calcButton, isLoading && styles.disabledButton]}
                     onPress={fetchSupportiveMessage}
                     disabled={isLoading}
-                >
+                
                     {isLoading ? (
                         <ActivityIndicator color="#ffffff" />
                     ) : (
+
                         <Text style={styles.buttonText}>Get Financial Tips</Text>
                     )}
                 </TouchableOpacity>
