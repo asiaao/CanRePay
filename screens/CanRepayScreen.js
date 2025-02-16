@@ -9,7 +9,6 @@ import {
   TextInput,
   Alert,
   ActivityIndicator,
-  StyleSheet,
   KeyboardAvoidingView,
   Platform,
   Keyboard
@@ -117,45 +116,46 @@ const CanRepayScreen = ({ navigation }) => {
 
     const [isLoading, setIsLoading] = useState(false);
 
-      const fetchSupportiveMessage = async () => {
-          setIsLoading(true);
-          try {
-              const response = await fetch('https://secure-atoll-91561-049610200036.herokuapp.com/generateMessage', {
-                  method: 'POST',
-                  headers: {
-                      'Accept': 'application/json',
-                      'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify({
-                      monthlyIncome: parseFloat(monthlyIncome) || 0,
-                      totalDebt: parseFloat(totalLiabilities) || 0
-                  })
-              });
-      
-              if (!response.ok) {
-                  throw new Error(`HTTP error! status: ${response.status}`);
-              }
-      
-              const data = await response.json();
-              if (data.message) {
-                  Alert.alert(
-                      "Financial Insight",
-                      data.message,
-                      [{ text: "OK" }],
-                      { cancelable: false }
-                  );
-              }
-          } catch (error) {
-              console.error('Error:', error);
-              Alert.alert(
-                  "Error",
-                  "Unable to get financial advice. Please try again later.",
-                  [{ text: "OK" }]
-              );
-          } finally {
-              setIsLoading(false);
+
+    const fetchSupportiveMessage = async () => {
+      setIsLoading(true);
+      try {
+          const response = await fetch('https://web-production-d4bf7.up.railway.app//generateMessage', {
+              method: 'POST',
+              headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                  requestType: "general_tips" 
+              })
+          });
+  
+          if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
           }
-      };
+  
+          const data = await response.json();
+          if (data.message) {
+              Alert.alert(
+                  "Financial Insight",
+                  data.message,
+                  [{ text: "OK" }],
+                  { cancelable: false }
+              );
+          }
+      } catch (error) {
+          console.error('Error:', error);
+          Alert.alert(
+              "Error",
+              "Unable to get financial advice.",
+              [{ text: "OK" }]
+          );
+      } finally {
+          setIsLoading(false);
+      }
+  };
+  
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#0A254D" />
@@ -362,6 +362,11 @@ const CanRepayScreen = ({ navigation }) => {
                 </View>
 
               {/* Supportive Advice Section */}
+
+            <View style={styles.card}>
+                <Text style={styles.cardTitle}>We're here to support you!</Text>
+                <Text style={styles.infoText}>
+                    Tap the button below to receive helpful financial tips and encouragement.
               <View style={styles.card}>
                 <Text style={styles.cardTitle}>Financial Health Check</Text>
                 <Text style={styles.infoText}>
@@ -371,11 +376,12 @@ const CanRepayScreen = ({ navigation }) => {
                     style={[styles.calcButton, isLoading && styles.disabledButton]}
                     onPress={fetchSupportiveMessage}
                     disabled={isLoading}
-                >
+                
                     {isLoading ? (
                         <ActivityIndicator color="#ffffff" />
                     ) : (
-                        <Text style={styles.buttonText}>Get Advice</Text>
+
+                        <Text style={styles.buttonText}>Get Financial Tips</Text>
                     )}
                 </TouchableOpacity>
             </View>
