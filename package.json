@@ -2,7 +2,8 @@
   "license": "0BSD",
   "main": "index.js",
   "scripts": {
-    "start": "node canrepay-backend/server.js"
+    "start": "node canrepay-backend/server.js",
+    "start:expo": "expo start"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
