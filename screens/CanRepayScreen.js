@@ -119,7 +119,7 @@ const CanRepayScreen = ({ navigation }) => {
     const fetchSupportiveMessage = async () => {
       setIsLoading(true);
       try {
-          const response = await fetch('https://secure-atoll-91561-049610200036.herokuapp.com/generateMessage', {
+          const response = await fetch('https://web-production-d4bf7.up.railway.app//generateMessage', {
               method: 'POST',
               headers: {
                   'Accept': 'application/json',
