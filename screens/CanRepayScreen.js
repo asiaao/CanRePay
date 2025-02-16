@@ -360,25 +360,6 @@ const CanRepayScreen = ({ navigation }) => {
                     )}
                 </View>
 
-              {/* Supportive Advice Section */}
-            <View style={styles.card}>
-                <Text style={styles.cardTitle}>We're here to support you!</Text>
-                <Text style={styles.infoText}>
-                    Tap the button below to receive helpful financial tips and encouragement.
-                </Text>
-                <TouchableOpacity
-                    style={[styles.calcButton, isLoading && styles.disabledButton]}
-                    onPress={fetchSupportiveMessage}
-                    disabled={isLoading}
-                >
-                    {isLoading ? (
-                        <ActivityIndicator color="#ffffff" />
-                    ) : (
-                        <Text style={styles.buttonText}>Get Financial Tips</Text>
-                    )}
-                </TouchableOpacity>
-            </View>
-
             {/* Informational Section */}
             <View style={styles.card}>
               <Text style={styles.cardTitle}>Federal vs. Provincial Loans</Text>
